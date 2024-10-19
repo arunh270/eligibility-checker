@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eligibility Checker</title>
+</head>
+<body>
+    <h1>Check Eligibility</h1>
+    <form id="eligibilityForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age"><br><br>
+        
+        <label for="income">Income:</label>
+        <input type="number" id="income" name="income"><br><br>
+        
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department"><br><br>
+        
+        <input type="submit" value="Check Eligibility">
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('eligibilityForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const age = document.getElementById('age').value;
+            const income = document.getElementById('income').value;
+            const department = document.getElementById('department').value;
+            
+            const response = await fetch('/check-eligibility', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ age: age, income: income, department: department })
+            });
+            
+            const result = await response.json();
+            document.getElementById('result').innerText = result.eligible ? "You are eligible!" : "You are not eligible.";
+        });
+    </script>
+</body>
+</html>
